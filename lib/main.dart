@@ -58,19 +58,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Fading Text Animation'),
-        actions: [
-          IconButton(
-            icon: Icon(
-              widget.themeMode == ThemeMode.light
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-            ),
-            onPressed: widget.onToggleTheme,
-          ),
-        ],
-      ),
+      appBar: AppBar(title: Text('Fading Text Animation')),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
