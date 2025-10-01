@@ -51,7 +51,7 @@ class FadingTextAnimation extends StatefulWidget {
 class _FadingTextAnimationState extends State<FadingTextAnimation> {
   bool _isVisible = true;
   bool _showFrame = false;
-  Color _textColor = Colors.black; // ← selected text color
+  Color _textColor = Colors.black;
 
   void toggleVisibility() {
     setState(() {
@@ -166,20 +166,16 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
         ],
       ),
 
-      // Two FABs side-by-side (left/right)
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
-        width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             FloatingActionButton(
-              heroTag: 'colorFab',
               onPressed: _pickTextColor,
               child: const Icon(Icons.color_lens),
             ),
             FloatingActionButton(
-              heroTag: 'playFab',
               onPressed: toggleVisibility,
               child: const Icon(Icons.play_arrow),
             ),
