@@ -4,14 +4,42 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  ThemeMode _themeMode = ThemeMode.light; // default to day mode
+
+  void _toggleTheme() {
+    setState(() {
+      _themeMode =
+          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: FadingTextAnimation());
+    return MaterialApp(
+      title: "Day/Night Toggle",
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode, // uses light or dark mode dynamically
+      home: FadingTextAnimation(onToggleTheme: _toggleTheme, themeMode: _themeMode),
+    );
   }
 }
 
 class FadingTextAnimation extends StatefulWidget {
+  final VoidCallback onToggleTheme;
+  final ThemeMode themeMode;
+
+  const FadingTextAnimation({
+    required this.onToggleTheme,
+    required this.themeMode,
+  });
+
   @override
   _FadingTextAnimationState createState() => _FadingTextAnimationState();
 }
@@ -29,7 +57,19 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Fading Text Animation')),
+      appBar: AppBar(
+        title: Text('Fading Text Animation'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              widget.themeMode == ThemeMode.light
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+            onPressed: widget.onToggleTheme,
+          ),
+        ],
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
