@@ -31,6 +31,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
       body: Center(
         child: AnimatedOpacity(
           opacity: _isVisible ? 1.0 : 0.0,
+          curve: Curves.easeInOut,
           duration: Duration(seconds: 1),
           child: 
           const Text('Hello, Flutter!', 
