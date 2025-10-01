@@ -27,9 +27,21 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
-      home: FadingTextAnimation(
-        onToggleTheme: _toggleTheme,
-        themeMode: _themeMode,
+      home: PageView(
+        children: [
+          FadingTextAnimation(
+            title: 'Fading (1s)',
+            duration: const Duration(seconds: 1),
+            onToggleTheme: _toggleTheme,
+            themeMode: _themeMode,
+          ),
+          FadingTextAnimation(
+            title: 'Fading (3s)',
+            duration: const Duration(seconds: 3),
+            onToggleTheme: _toggleTheme,
+            themeMode: _themeMode,
+          ),
+        ],
       ),
     );
   }
@@ -38,10 +50,14 @@ class _MyAppState extends State<MyApp> {
 class FadingTextAnimation extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final ThemeMode themeMode;
+  final Duration duration;
+  final String title;
 
   const FadingTextAnimation({
     required this.onToggleTheme,
     required this.themeMode,
+    required this.duration,
+    required this.title,
   });
 
   @override
@@ -118,7 +134,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Fading Text Animation'),
+        title: Text(widget.title),
         actions: [
           IconButton(
             icon: Icon(
@@ -137,7 +153,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
             child: AnimatedOpacity(
               opacity: _isVisible ? 1.0 : 0.0,
               curve: Curves.easeInOut,
-              duration: const Duration(seconds: 1),
+              duration: widget.duration,
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: _showFrame
