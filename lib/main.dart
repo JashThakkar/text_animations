@@ -18,6 +18,8 @@ class FadingTextAnimation extends StatefulWidget {
 
 class _FadingTextAnimationState extends State<FadingTextAnimation> {
   bool _isVisible = true;
+  bool _showFrame = false;
+
   void toggleVisibility() {
     setState(() {
       _isVisible = !_isVisible;
