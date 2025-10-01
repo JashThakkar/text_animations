@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode, 
-      home: FadingTextAnimation(onToggleTheme: _toggleTheme, themeMode: _themeMode),
+      home: FadingTextAnimation(onToggleTheme: _toggleTheme, themeMode: _themeMode, duration: null,, title: '',),
     );
   }
 }
