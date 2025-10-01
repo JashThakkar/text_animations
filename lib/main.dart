@@ -142,7 +142,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
                 padding: const EdgeInsets.all(16),
                 decoration: _showFrame
                     ? BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 3),
+                        border: Border.all(color: _textColor, width: 3),
                         borderRadius: BorderRadius.circular(8),
                       )
                     : null,
