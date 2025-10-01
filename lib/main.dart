@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.light; 
+  ThemeMode _themeMode = ThemeMode.light;
 
   void _toggleTheme() {
     setState(() {
@@ -27,22 +27,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode, 
-      home: PageView(
-        children: [
-          FadingTextAnimation(
-            title: 'Fading (1s)',
-            duration: const Duration(seconds: 1),
-            onToggleTheme: _toggleTheme,
-            themeMode: _themeMode,
-          ),
-          FadingTextAnimation(
-            title: 'Fading (3s)',
-            duration: const Duration(seconds: 3),
-            onToggleTheme: _toggleTheme,
-            themeMode: _themeMode,
-          ),
-        ],
-      ),
+      home: FadingTextAnimation(onToggleTheme: _toggleTheme, themeMode: _themeMode),
     );
   }
 }
@@ -67,6 +52,7 @@ class FadingTextAnimation extends StatefulWidget {
 class _FadingTextAnimationState extends State<FadingTextAnimation> {
   bool _isVisible = true;
   bool _showFrame = false;
+  Color _textColor = Colors.black;
 
   void toggleVisibility() {
     setState(() {
@@ -74,11 +60,66 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
     });
   }
 
+  Future <void> _pickTextColor() async {
+    final colors = <Color>[
+      Colors.black,
+      Colors.white,
+      Colors.green,
+      Colors.blue,
+      Colors.purple,
+      Colors.teal,
+      Colors.pink,
+      Colors.indigo,
+    ];
+
+    await showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Pick text color'),
+          content: SizedBox(
+            width: 300,
+            child: GridView.count(
+              crossAxisCount: 4,
+              mainAxisSpacing: 12,
+              crossAxisSpacing: 12,
+              shrinkWrap: true,
+              children: colors.map((c) {
+                final isSelected = c.value == _textColor.value;
+                return InkWell(
+                  onTap: () {
+                    setState(() => _textColor = c);
+                    Navigator.of(context).pop();
+                  },
+                  borderRadius: BorderRadius.circular(24),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      CircleAvatar(radius: 20, backgroundColor: c),
+                      if (isSelected)
+                        const Icon(Icons.check, color: Colors.white),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('Fading Text Animation'),
         actions: [
           IconButton(
             icon: Icon(
@@ -89,7 +130,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
             onPressed: widget.onToggleTheme,
           ),
         ],
-        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -97,25 +138,25 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
             child: AnimatedOpacity(
               opacity: _isVisible ? 1.0 : 0.0,
               curve: Curves.easeInOut,
-              duration: widget.duration,
+              duration: Duration(seconds: 1),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: _showFrame
                     ? BoxDecoration(
-                        border: Border.all(color: Colors.blue, width: 3),
+                        border: Border.all(color: _textColor, width: 3),
                         borderRadius: BorderRadius.circular(8),
                       )
                     : null,
-                child: const Text(
+                child: Text(
                   'Hello, Flutter!',
-                  style: TextStyle(fontSize: 24),
+                  style: TextStyle(fontSize: 24, color: _textColor),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 350),
+          const SizedBox(height: 350),
           SwitchListTile(
-            title: Text('Show Frame', textAlign: TextAlign.right),
+            title: const Text('Show Frame', textAlign: TextAlign.right),
             value: _showFrame,
             onChanged: (bool value) {
               setState(() {
@@ -125,9 +166,22 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: toggleVisibility,
-        child: Icon(Icons.play_arrow),
+
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            FloatingActionButton(
+              onPressed: _pickTextColor,
+              child: const Icon(Icons.color_lens),
+            ),
+            FloatingActionButton(
+              onPressed: toggleVisibility,
+              child: const Icon(Icons.play_arrow),
+            ),
+          ],
+        ),
       ),
     );
   }
