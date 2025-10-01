@@ -26,8 +26,11 @@ class _MyAppState extends State<MyApp> {
       title: "Day/Night Toggle",
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: _themeMode, 
-      home: FadingTextAnimation(onToggleTheme: _toggleTheme, themeMode: _themeMode, duration: null,, title: '',),
+      themeMode: _themeMode,
+      home: FadingTextAnimation(
+        onToggleTheme: _toggleTheme,
+        themeMode: _themeMode,
+      ),
     );
   }
 }
@@ -35,14 +38,10 @@ class _MyAppState extends State<MyApp> {
 class FadingTextAnimation extends StatefulWidget {
   final VoidCallback onToggleTheme;
   final ThemeMode themeMode;
-  final Duration duration;
-  final String title;
 
   const FadingTextAnimation({
     required this.onToggleTheme,
     required this.themeMode,
-    required this.duration,
-    required this.title,
   });
 
   @override
@@ -119,7 +118,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Fading Text Animation'),
+        title: const Text('Fading Text Animation'),
         actions: [
           IconButton(
             icon: Icon(
@@ -138,7 +137,7 @@ class _FadingTextAnimationState extends State<FadingTextAnimation> {
             child: AnimatedOpacity(
               opacity: _isVisible ? 1.0 : 0.0,
               curve: Curves.easeInOut,
-              duration: Duration(seconds: 1),
+              duration: const Duration(seconds: 1),
               child: Container(
                 padding: const EdgeInsets.all(16),
                 decoration: _showFrame
